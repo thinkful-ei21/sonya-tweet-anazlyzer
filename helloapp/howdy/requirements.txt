@@ -1,0 +1,5 @@
+Django==2.1
+nltk==3.3
+pytz==2018.5
+six==1.11.0
+textblob==0.15.1
