@@ -1,7 +1,5 @@
 from textblob import TextBlob
-import base64
-import pprint
-import requests
+import base64 pprint requests
 from keys import client_key
 from keys import client_secret
 
@@ -30,7 +28,6 @@ search_headers = {
 }
 
 tweet_data = []
-
 
 def get_tweet_ids_and_text(data):
     tweet_dict = {}
