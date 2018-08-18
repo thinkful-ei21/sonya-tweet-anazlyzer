@@ -1,12 +1,11 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, QueryDict, HttpResponseNotFound
 
 
 def analyze(request):
-    # return a response containing the sentiment value for user's input search terms
-    # if value:
-    #     return HttpResponse()
+    query = request.GET.get("search")
+    print(query)
+        # search_term = QueryDict["search"]
+    return HttpResponse({"value": "Analyze this"})
     # else:
-    #     return HttpResponseNotFound("<h1>Page not found</h1>")
-    return HttpResponse("Analyze this")
-
+        # return HttpResponseNotFound("<h1>Page not found</h1>")

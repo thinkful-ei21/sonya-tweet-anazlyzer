@@ -9,29 +9,28 @@ class App extends Component {
       sentiment: null
     }
   }
-
 onSubmit(e) {
   e.preventDefault();
-  fetch("http://127.0.0.1:8000/analyze/", {
-    method: 'POST',
+  console.log(this.input.value)
+  fetch(`http://127.0.0.1:8000/analyze/?search=${this.input.value}`, {
+    method: 'GET',
     headers: {
       "Content-Type": "application/json"
-    },
-    body: JSON.stringify({search: this.input})
+    }
   })
   .then(res => this.setState({
     sentiment: res.value
   }))
   .catch(err => console.log(err));
 }
-  
+
 
   render() {
     return (
       <form>
         <label htmlFor="search">Enter Search Terms</label>
         <input type="text" name="search" ref={input => (this.input = input)}></input>
-        <button type="submit" onSubmit={(e) => this.onSubmit}>Submit</button>
+        <button type="submit" onClick={(e) => this.onSubmit(e)}>Submit</button>
         <span>sentiment value: {this.state.sentiment}</span>
       </form>
     );
