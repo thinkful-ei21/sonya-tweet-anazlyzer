@@ -17,5 +17,5 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path('analyze/', include('text_analyzer.urls')),
+    path('', include('text_analyzer.urls')),
 ]

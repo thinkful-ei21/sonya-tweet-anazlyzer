@@ -12,16 +12,18 @@ class App extends Component {
 onSubmit(e) {
   e.preventDefault();
   console.log(this.input.value)
-  fetch(`http://127.0.0.1:8000/analyze/?search=${this.input.value}`, {
+  fetch(`http://127.0.0.1:8000/analyze?search=${this.input.value}`, {
     method: 'GET',
     headers: {
-      "Content-Type": "application/json"
+      'Accept': 'application/json',
+      'X-Requested-With': 'XMLHttpRequest'
     }
   })
-  .then(res => this.setState({
-    sentiment: res.value
-  }))
-  .catch(err => console.log(err));
+  .then(response => {
+    // let res = JSON.parse(response);
+    console.log(response);
+})
+  .catch(err => console.log(err, "there's an error!"));
 }
 
 
