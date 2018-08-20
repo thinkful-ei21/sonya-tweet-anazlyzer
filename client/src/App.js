@@ -16,7 +16,8 @@ onSubmit(e) {
     method: 'GET',
     headers: {
       'Accept': 'application/json',
-      'X-Requested-With': 'XMLHttpRequest'
+      'Content-Type': 'application/json'
+      // 'X-Requested-With': 'XMLHttpRequest'
     }
   })
   .then(response => {

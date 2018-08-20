@@ -1,19 +1,22 @@
 from django.shortcuts import render
-from django.http import JsonResponse, HttpResponse, QueryDict, HttpResponseNotFound
+from django.http import JsonResponse, HttpResponseNotFound, HttpResponse
 import json
+
 
 def analyze(request):
     if request.method == "GET":
         # print("request fired")
         # q = request.GET.get("search")
-        # data = {
-        #     "search": q,
-        #     "name": "sonya"
-        # }
-        # print(data)
-        # return JsonResponse(data)
-        response = HttpResponse("Here's the text of the Web page.")
-        response = HttpResponse("Text only, please.", content_type="text/plain")
+        data = {
+            "search": "Trump",
+            "name": "sonya"
+        }
+        # string = "<h1> What up? </h1>"
+        # print(JsonResponse(data))
+        # return JsonResponse(string, safe=False)
+        response = HttpResponse(data)
+        response["Access-Control-Allow-Origin"] =  "*"
         return response
+        # return JsonResponse(response, safe=False)
     else:
         return HttpResponseNotFound("<h1>Page not found</h1>")
