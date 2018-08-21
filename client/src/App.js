@@ -21,9 +21,9 @@ onSubmit(e) {
     }
   })
   .then(response => {
-    // let res = JSON.parse(response);
-    console.log(response);
+    return response.json();
 })
+  .then(response => console.log(response, 'how is the undefined?'))
   .catch(err => console.log(err, "there's an error!"));
 }
 
