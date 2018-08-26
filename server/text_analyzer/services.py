@@ -1,10 +1,10 @@
 from textblob import TextBlob
 import base64, pprint, requests
-from keys import client_key
-from keys import client_secret
+from .keys import client_key
+from .keys import client_secret
 
 
-class analyzer:
+class Analyzer:
 
     def __init__(self):
         self.base_url = "https://api.twitter.com/"
@@ -32,6 +32,7 @@ class analyzer:
     def get_tweet_ids_and_text(self, data):
         tweet_dict = {}
         for x in data:
+            pprint.pprint(x)
             tweet_dict[x["id"]] = x["text"]
         return tweet_dict
 
@@ -39,13 +40,13 @@ class analyzer:
     def get_tweets(self, search_term):
         tweet_counter = 0
         max_id = None
-        while tweet_counter < 1000:
+        while tweet_counter < 1:
             search_url = "{}1.1/search/tweets.json".format(self.base_url)
             search_params = {
                 "q": "{}".format(search_term),
                 "result_type": "recent",
                 "lang": "en",
-                "count": 100,
+                "count": 1,
                 "max_id": max_id
             }
             search_resp = requests.get(search_url, headers=self.search_headers, params=search_params)    
@@ -62,7 +63,7 @@ class analyzer:
                     if id < lowest_id:
                         lowest_id = id
             max_id = lowest_id - 1
-            tweet_counter += 100
+            tweet_counter += 1
 
     def analyze_tweets(self, search_term):
 
@@ -81,10 +82,10 @@ class analyzer:
         tweet_texts = ""
         for key in unique_tweets.values():
             tweet_texts += key
-
+        print("-----------------", tweet_texts)
         text = TextBlob(" ".join(tweet_texts))
 
-        return text.sentiment
+        return text.sentiment[0]
 
 
 # test = analyzer()
