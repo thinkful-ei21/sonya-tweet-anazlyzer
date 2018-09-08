@@ -125,8 +125,8 @@ STATIC_URL = '/static/'
 # CORS
 CORS_ORIGIN_WHITELIST = (
     'google.com',
-    'localhost:3000',
-    '127.0.0.1:9000'
+    'localhost:3001',
+    # '127.0.0.1:9000'
 )
 
 CSRF_COOKIE_SECURE = False

@@ -14,12 +14,6 @@ def analyze(request):
             "search": q,
             "sentiment": sentiment
         }
-        # string = "<h1> What up? </h1>"
-        # print(JsonResponse(data))
-        # return JsonResponse(string, safe=False)
-        # response = HttpResponse(data)
-        # response["Access-Control-Allow-Origin"] =  "*"
-        # return response
         return JsonResponse(data)
     else:
         return HttpResponseNotFound("<h1>Page not found</h1>")

@@ -1,7 +1,11 @@
 from textblob import TextBlob
-import base64, pprint, requests
+import base64
+import pprint
+import requests
+import asyncio
 from .keys import client_key
 from .keys import client_secret
+
 
 
 class Analyzer:
@@ -32,69 +36,45 @@ class Analyzer:
     def get_tweet_ids_and_text(self, data):
         tweet_dict = {}
         for x in data:
-            # pprint.pprint(x)
+        
             tweet_dict[x["id"]] = x["text"]
         return tweet_dict
 
 
+    def get_json(self, search_term):
+        search_url = "{}1.1/search/tweets.json".format(self.base_url)
+        search_params = {
+            "q": "{}".format(search_term),
+            "result_type": "recent",
+            "lang": "en",
+            "count": 10,
+        }
+        search_resp = requests.get(search_url, headers=self.search_headers, params=search_params)  
+        return search_resp.json()
+ 
+
     def get_tweets(self, search_term):
-        tweet_counter = 0
-        max_id = None
-        while tweet_counter < 1000:
-            search_url = "{}1.1/search/tweets.json".format(self.base_url)
-            search_params = {
-                "q": "{}".format(search_term),
-                "result_type": "recent",
-                "lang": "en",
-                "count": 10,
-                "max_id": max_id
-            }
-            search_resp = requests.get(search_url, headers=self.search_headers, params=search_params)    
-            tweets_json = search_resp.json()
-            tweet_info = tweets_json["statuses"]
-            for x in tweet_info:
-                self.tweet_data.append(x)
-            # get lowest id from tweet data and pass to api call as max_id param to get new tweets
-            # loops through tweets and add id to the array if it is unique
-            tweet_ids = []
-            for x in tweets_json["statuses"]:
-                if x["id"] not in tweet_ids:
-                    tweet_ids.append(x["id"])
-
-            # loop through tweet ids array and find lowest id number
-            lowest_id = tweet_ids[0]
-            for id in tweet_ids:
-                if id < lowest_id:
-                    # print('id: ',id, 'lowest id: ',lowest_id)
-                    lowest_id = id
-            # set the lowest id to the mas_id variable,
-            max_id = lowest_id - 1
-            tweet_counter += 100
-
+     
+        tweets_json = self.get_json(search_term)
+        
+        tweet_info = tweets_json["statuses"]
+        for x in tweet_info:
+            self.tweet_data.append(x)
+            
     def analyze_tweets(self, search_term):
 
 
         self.get_tweets(search_term)
-        # pull out text and id from tweet data
+        
         processed_tweet_data = self.get_tweet_ids_and_text(self.tweet_data)
 
-        # remove all duplicate tweets
-        # unique_tweets = {}
-        # for tweet in processed_tweet_data:
-        #         # if tweet not in unique_tweets:
-        #     unique_tweets[tweet] = processed_tweet_data[tweet]
-        # print("----",unique_tweets,"------")
-        # # create a list of tweet text
         tweet_texts = ""
         for key in processed_tweet_data.values():
             tweet_texts += key
-            # print(key, " --- ")
+            
         text = TextBlob(" ".join(tweet_texts))
 
         print(text.sentiment)
-        return text.sentiment
+        return text.sentiment[0]
 
 
-# test = analyzer()
-
-# test.analyze_tweets("have a great day happy")
